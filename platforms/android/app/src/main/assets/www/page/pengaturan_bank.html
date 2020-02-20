@@ -1,0 +1,45 @@
+<ons-page id="page-bank">
+	<ons-toolbar class="bg-utama">
+		<div class="left">
+			<ons-toolbar-button icon="fa-arrow-left" class="text-white" onclick="myPage.resetToPage('page/pengaturan.html', {animation:'fade'});"></ons-toolbar-button>
+		</div>
+		<div class="center text-white">
+			Akun Bank
+		</div>
+	</ons-toolbar>
+	<div class="background"></div>
+	<div class="content bg-white">
+
+		<div class="container">
+			<form id="form-bank" class="">
+				<div class="form-group">
+					<label for="id_plm">ID PLM</label>
+					<input type="text" name="id_plm" id="id_plm" class="form-control" placeholder="Masukan ID PLM Anda" required readonly>
+				</div>
+				<div class="form-group">
+					<label for="nama_bank">Nama Bank</label>
+					<input type="text" name="nama_bank" id="nama_bank" class="form-control" placeholder="Masukan Nama Bank Anda" required>
+				</div>
+				<div class="form-group">
+					<label for="norek_bank">Nomor Rekening Bank</label>
+					<input type="number" name="norek_bank" id="norek_bank" class="form-control" placeholder="Masukan Nomor Rekening Bank Anda" required>
+				</div>
+				<div class="form-group">
+					<label for="an_bank">Atas Nama</label>
+					<input type="text" name="an_bank" id="an_bank" class="form-control" placeholder="Masukan Atas Nama" required>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-blue btn-full">Tambahkan Akun Bank</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<ons-modal direction="up">
+	  <div style="text-align: center">
+	    <p>
+			<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+			<span class="sr-only">Loading...</span>
+	    </p>
+	  </div>
+	</ons-modal>
+</ons-page>

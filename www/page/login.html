@@ -1,0 +1,35 @@
+<ons-page id="page-login">
+	<div class="background bg-utama"></div>
+	<div class="content">
+		<div class="container">
+			<img src="vendor/img/logo.jpeg" class="img-responsive img-login" alt="">
+			<form id="form-login" class="form-horizontal">
+				<div class="form-group">
+					<label for="login-id" class="text-white lbla">ID PLM</label>
+					<input type="text" name="login-id" id="login-id" class="form-control" placeholder="Masukan ID PLM Anda"  required>
+				</div>
+				<div class="form-group">
+					<label for="login-password" class="text-white">Password</label>
+					<input type="password" name="login-password" id="login-password" class="form-control" placeholder="Masukan Password Anda"  required>
+				</div>
+				<div class="form-group">
+					<p class="lupa-passord">Lupa password? Disini</a>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-full bg-white">Masuk</button>
+				</div>
+				<div class="form-group">
+					<button type="button" class="btn blue btn-full text-white" onclick="myPage.resetToPage('page/register.html', {animation:'fade'});">Daftar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<ons-modal id="modal-login" direction="up">
+	  <div style="text-align: center">
+	    <p>
+			<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+			<span class="sr-only">Loading...</span>
+	    </p>
+	  </div>
+	</ons-modal>
+</ons-page>

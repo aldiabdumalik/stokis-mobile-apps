@@ -1,0 +1,61 @@
+<ons-page id="page-beranda">
+	<ons-toolbar>
+		<!-- <div class="left">&nbsp;</div> -->
+		<div class="center text-utama">
+			Silent Dreams Integrated Apps
+		</div>
+		<div class="right">
+			<ons-toolbar-button icon="fa-cog" class="text-utama" onclick="myPage.resetToPage('page/pengaturan.html', {animation:'fade'});"></ons-toolbar-button>
+		</div>
+	</ons-toolbar>
+	<div class="background bg-utama"></div>
+	<div class="content">
+		<div class="container">
+			<img src="vendor/img/logo.jpeg" class="img-responsive img-login" alt="">
+			<div class="menu">
+				<ons-row>
+					<ons-col class="card bg-utama" onclick="myPage.resetToPage('page/produk.html', {animation:'fade'});">
+						<img src="vendor/img/icon/info.png" class="img-responsive" alt="">
+						<p>Info Produk</p>
+					</ons-col>
+					<ons-col class="card bg-utama" onclick="myPage.resetToPage('page/pertemuan.html', {animation:'fade'});">
+						<img src="vendor/img/icon/pertemuan.png" class="img-responsive" alt="">
+						<p>Info Pertemuan</p>
+					</ons-col>
+					<ons-col class="card bg-utama" onclick="myPage.resetToPage('page/order.html', {animation:'fade'});">
+						<img src="vendor/img/icon/order.png" class="img-responsive" alt="">
+						<p>Order Produk</p>
+					</ons-col>
+				</ons-row>
+				<ons-row>
+					<ons-col class="card bg-utama" onclick="myPage.resetToPage('page/flip.html', {animation:'fade'});">
+						<img src="vendor/img/icon/chart.png" class="img-responsive" alt="">
+						<p>Flip Chart</p>
+					</ons-col>
+					<ons-col class="card bg-utama" onclick="myPage.resetToPage('page/plan.html', {animation:'fade'});">
+						<img src="vendor/img/icon/plan.png" class="img-responsive" alt="">
+						<p>Marketing Plan</p>
+					</ons-col>
+					<ons-col id="peg-standar" class="card bg-utama">
+						<img src="vendor/img/icon/persentasi.png" class="img-responsive" alt="">
+						<p>Persentasi Standar</p>
+					</ons-col>
+				</ons-row>
+				<ons-row>
+					<ons-col class="card bg-utama" onclick="myPage.resetToPage('page/basic.html', {animation:'fade'});">
+						<img src="vendor/img/icon/basic.png" class="img-responsive" alt="">
+						<p>Basic Pack</p>
+					</ons-col>
+					<ons-col class="card bg-utama" onclick="myPage.resetToPage('page/persentasi.html', {animation:'fade'});">
+						<img src="vendor/img/icon/success.png" class="img-responsive" alt="">
+						<p>7 Langkah Sukses 3 Prinsip Dasar</p>
+					</ons-col>
+					<ons-col class="card bg-utama" onclick="myPage.resetToPage('page/testimoni.html', {animation:'fade'});">
+						<img src="vendor/img/icon/testtimoni.png" class="img-responsive" alt="">
+						<p>Video Testimoni</p>
+					</ons-col>
+				</ons-row>
+			</div>
+		</div>
+	</div>
+</ons-page>

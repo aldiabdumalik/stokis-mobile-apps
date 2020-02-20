@@ -1,0 +1,41 @@
+<ons-page id="page-profile">
+	<ons-toolbar class="bg-utama">
+		<div class="left">
+			<ons-toolbar-button icon="fa-arrow-left" class="text-white" onclick="myPage.resetToPage('page/pengaturan.html', {animation:'fade'});"></ons-toolbar-button>
+		</div>
+		<div class="center text-white">
+			Pengaturan Profile
+		</div>
+	</ons-toolbar>
+	<div class="background"></div>
+	<div class="content bg-white">
+
+		<div class="container">
+			<form id="form-profile" class="">
+				<div class="form-group">
+					<label for="profile-id">ID PLM</label>
+					<input type="text" name="profile-id" id="profile-id" class="form-control" placeholder="Masukan ID PLM Anda" required readonly>
+				</div>
+				<div class="form-group">
+					<label for="profile-nama">Nama Lengkap</label>
+					<input type="text" name="profile-nama" id="profile-nama" class="form-control" placeholder="Masukan Nama Lengkap Anda" required>
+				</div>
+				<div class="form-group">
+					<label for="profile-nowa">Nomor Whatsapp</label>
+					<input type="number" name="profile-nowa" id="profile-nowa" class="form-control" placeholder="Masukan Nomor Whatsapp Anda" required>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-blue btn-full">Perbaharui</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<ons-modal direction="up">
+	  <div style="text-align: center">
+	    <p>
+			<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+			<span class="sr-only">Loading...</span>
+	    </p>
+	  </div>
+	</ons-modal>
+</ons-page>

@@ -1,0 +1,19 @@
+<ons-page id="page-pengaturan">
+	<ons-toolbar class="bg-utama">
+		<div class="left">
+			<ons-toolbar-button icon="fa-arrow-left" class="text-white" onclick="myPage.resetToPage('page/beranda.html', {animation:'fade'});"></ons-toolbar-button>
+		</div>
+		<div class="center text-white">
+			Pengaturan
+		</div>
+	</ons-toolbar>
+	<div class="background"></div>
+	<div class="content bg-white">
+		<ons-list>
+			<ons-list-header>Pengaturan</ons-list-header>
+			<ons-list-item modifier="longdivider chevron" tappable onclick="profile()">Profile</ons-list-item>
+			<ons-list-item modifier="longdivider chevron" tappable onclick="bank()">Akun Bank</ons-list-item>
+			<ons-list-item modifier="longdivider chevron" tappable onclick="keluar()">Keluar</ons-list-item>
+		</ons-list>
+	</div>
+</ons-page>

@@ -1,0 +1,24 @@
+<ons-page id="page-pertemuan">
+	<ons-toolbar class="bg-utama">
+		<div class="left">
+			<ons-toolbar-button icon="fa-arrow-left" class="text-white" onclick="myPage.resetToPage('page/beranda.html', {animation:'fade'});"></ons-toolbar-button>
+		</div>
+		<div class="center text-white">
+			Info Pertemuan
+		</div>
+	</ons-toolbar>
+	<div class="background"></div>
+	<div class="content bg-white">
+		<ons-list id="list-info-pertemuan">
+			<ons-list-header>Pertemuan</ons-list-header>
+		</ons-list>
+	</div>
+	<ons-modal direction="up">
+	  <div style="text-align: center">
+	    <p>
+			<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+			<span class="sr-only">Loading...</span>
+	    </p>
+	  </div>
+	</ons-modal>
+</ons-page>

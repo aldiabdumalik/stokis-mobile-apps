@@ -1,0 +1,24 @@
+<ons-page id="page-plan">
+	<ons-toolbar class="bg-utama">
+		<div class="left">
+			<ons-toolbar-button icon="fa-arrow-left" class="text-white" onclick="myPage.resetToPage('page/beranda.html', {animation:'fade'});"></ons-toolbar-button>
+		</div>
+		<div class="center text-white">
+			Marketing Plan
+		</div>
+	</ons-toolbar>
+	<div class="background"></div>
+	<div class="content bg-white">
+		<div id="deskripsiPlan"></div>
+		<section id="fotoPlan" class="p-galery" style="text-align: justify;"></section>
+		<!-- <section id="photos"></section> -->
+	</div>
+	<ons-modal direction="up">
+	  <div style="text-align: center">
+	    <p>
+			<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+			<span class="sr-only">Loading...</span>
+	    </p>
+	  </div>
+	</ons-modal>
+</ons-page>

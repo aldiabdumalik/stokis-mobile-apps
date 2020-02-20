@@ -1,0 +1,26 @@
+{
+  "cordova-plugin-whitelist": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-whitelist@1"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "com-sarriaroman-photoviewer": {
+    "source": {
+      "type": "registry",
+      "id": "com-sarriaroman-photoviewer"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-in-app-youtube": {
+    "source": {
+      "type": "registry",
+      "id": "https://github.com/davidefavia/cordova-plugin-in-app-youtube"
+    },
+    "is_top_level": true,
+    "variables": {}
+  }
+}

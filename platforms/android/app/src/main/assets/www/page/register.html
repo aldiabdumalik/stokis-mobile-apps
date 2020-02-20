@@ -1,0 +1,49 @@
+<ons-page id="page-register">
+	<ons-toolbar class="bg-utama">
+		<div class="left">
+			<ons-toolbar-button icon="fa-arrow-left" class="text-white" onclick="myPage.resetToPage('page/login.html', {animation:'fade'});"></ons-toolbar-button>
+		</div>
+		<div class="center text-white">
+			Form Pendaftaran
+		</div>
+	</ons-toolbar>
+	<div class="background"></div>
+	<div class="content bg-white">
+
+		<div class="container">
+			<form id="form-register" class="">
+				<div class="form-group">
+					<label for="register-id">ID PLM</label>
+					<input type="text" name="register-id" id="register-id" class="form-control" placeholder="Masukan ID PLM Anda" required>
+				</div>
+				<div class="form-group">
+					<label for="register-nama">Nama Lengkap</label>
+					<input type="text" name="register-nama" id="register-nama" class="form-control" placeholder="Masukan Nama Lengkap Anda" required>
+				</div>
+				<div class="form-group">
+					<label for="register-nowa">Nomor Whatsapp</label>
+					<input type="number" name="register-nowa" id="register-nowa" class="form-control" placeholder="Masukan Nomor Whatsapp Anda" required>
+				</div>
+				<div class="form-group">
+					<label for="register-password">Password</label>
+					<input type="password" name="register-password" id="register-password" class="form-control" placeholder="Masukan Password Anda" required>
+				</div>
+				<div class="form-group">
+					<label for="register-password-ulangi">Password</label>
+					<input type="password" name="register-password-ulangi" id="register-password-ulangi" class="form-control" placeholder="Masukan Kembali Password Anda" required>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-blue btn-full">Daftar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<ons-modal id="modal-register" direction="up">
+	  <div style="text-align: center">
+	    <p>
+			<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+			<span class="sr-only">Loading...</span>
+	    </p>
+	  </div>
+	</ons-modal>
+</ons-page>

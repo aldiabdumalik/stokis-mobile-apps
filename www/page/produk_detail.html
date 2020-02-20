@@ -1,0 +1,27 @@
+<ons-page id="page-produk-detail">
+	<ons-toolbar class="bg-utama">
+		<div class="left">
+			<ons-toolbar-button icon="fa-arrow-left" class="text-white" onclick="myPage.resetToPage('page/produk.html', {animation:'fade'});"></ons-toolbar-button>
+		</div>
+		<div class="center text-white">
+			Detail Produk
+		</div>
+	</ons-toolbar>
+	<div class="background"></div>
+	<div class="content bg-white">
+		<div class="container">
+			<img id="img-produk-detail" src="vendor/img/logo.jpeg" class="img-responsive img-login" alt="">
+			<h4 id="title-produk-detail" style="margin-top: 15px;"></h4>
+			<div id="deskripsi-produk-detail" class="detail_produk" style="margin-top: 15px;text-align: justify;">
+			</div>
+		</div>
+	</div>
+	<ons-modal id="modal-produk" direction="up">
+	  <div style="text-align: center">
+	    <p>
+			<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+			<span class="sr-only">Loading...</span>
+	    </p>
+	  </div>
+	</ons-modal>
+</ons-page>

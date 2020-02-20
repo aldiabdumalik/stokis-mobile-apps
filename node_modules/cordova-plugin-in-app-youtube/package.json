@@ -1,0 +1,35 @@
+{
+  "_from": "git+https://github.com/davidefavia/cordova-plugin-in-app-youtube.git",
+  "_id": "cordova-plugin-in-app-youtube@1.0.1",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/cordova-plugin-in-app-youtube",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "https://github.com/davidefavia/cordova-plugin-in-app-youtube",
+    "rawSpec": "https://github.com/davidefavia/cordova-plugin-in-app-youtube",
+    "saveSpec": "git+https://github.com/davidefavia/cordova-plugin-in-app-youtube.git",
+    "fetchSpec": "https://github.com/davidefavia/cordova-plugin-in-app-youtube.git",
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "git+https://github.com/davidefavia/cordova-plugin-in-app-youtube.git#3a8a24725dd9b1269ca08f7f87efcbccb77f7eb0",
+  "_spec": "https://github.com/davidefavia/cordova-plugin-in-app-youtube",
+  "_where": "D:\\kadetech.co.id\\SiDIA",
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-in-app-youtube",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "deprecated": false,
+  "description": "Open YouTube video in app",
+  "name": "cordova-plugin-in-app-youtube",
+  "version": "1.0.1"
+}

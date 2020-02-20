@@ -1,0 +1,52 @@
+<ons-page id="page-order-produk">
+	<ons-toolbar class="bg-utama">
+		<div class="left">
+			<ons-toolbar-button icon="fa-arrow-left" class="text-white" onclick="myPage.resetToPage('page/order.html', {animation:'fade'});"></ons-toolbar-button>
+		</div>
+		<div class="center text-white">
+			Pilih Produk
+		</div>
+	</ons-toolbar>
+	<div class="background"></div>
+	<div class="content bg-white">
+		<div class="container">
+			<h3>Silahkan pilih produk</h3>
+			<section class="p-galery" style="text-align: justify;">
+				<select id="select-order" class="image-picker show-labels show-html">
+					<option></option>
+				</select>
+			</section>
+			<br/>
+			<br/>
+			<div id="tb-produk-detail"></div>
+		</div>
+		<div class="container" style="margin-top: 20px;">
+			<div class="form-group">
+				<label for="produk-qty">Qty</label>
+				<select name="produk-qty" id="produk-qty" class="form-control bg-white">
+					<option value="">Pilih jumlah Qty</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="produk-total">Total</label>
+				<input type="text" name="produk-total" id="produk-total" class="form-control" value="0" readonly>
+			</div>
+			<div class="form-group">
+				<table width="100%">
+					<tr>
+						<td width="50%"><button type="button" id="btn-produk-bayar" data-id="1" class="btn btn-blue btn-full btn-produk-bayar">Bayar</button></td>
+						<td width="50%"><button type="button" id="btn-produk-lanjut" data-id="2" class="btn btn-full btn-produk-bayar">Lanjut Belanja</button></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<ons-modal direction="up">
+	  <div style="text-align: center">
+	    <p>
+			<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+			<span class="sr-only">Loading...</span>
+	    </p>
+	  </div>
+	</ons-modal>
+</ons-page>

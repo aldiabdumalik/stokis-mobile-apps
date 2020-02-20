@@ -1,0 +1,69 @@
+<ons-page id="page-order">
+	<ons-toolbar class="bg-utama">
+		<div class="left">
+			<ons-toolbar-button icon="fa-arrow-left" class="text-white" onclick="myPage.resetToPage('page/beranda.html', {animation:'fade'});"></ons-toolbar-button>
+		</div>
+		<div class="center text-white">
+			Transaksi
+		</div>
+	</ons-toolbar>
+	<div class="background"></div>
+	<div class="content bg-white">
+		<ons-list modifier="inset">
+			<div id="form-trs">
+				<div class="form-group">
+					<label for="order_nama">Nama</label>
+					<input type="text" name="order_nama" id="order_nama" class="form-control" autocomplete="off">
+				</div>
+				<div class="form-group">
+					<label for="order_nowa">No WA</label>
+					<input type="number" name="order_nowa" id="order_nowa" class="form-control" autocomplete="off">
+				</div>
+				<div class="form-group">
+					<label for="order_alamat">Alamat</label>
+					<input type="text" name="order_alamat" id="order_alamat" class="form-control" autocomplete="off">
+				</div>
+
+				<div class="form-group">
+					<label for="order_nama_penerima">Nama Penerima</label>
+					<input type="text" name="order_nama_penerima" id="order_nama_penerima" class="form-control" autocomplete="off">
+				</div>
+				<div class="form-group">
+					<label for="order_nowa_penerima">No WA Penerima</label>
+					<input type="number" name="order_nowa_penerima" id="order_nowa_penerima" class="form-control" autocomplete="off">
+				</div>
+				<div class="form-group">
+					<label for="order_alamat_penerima">Alamat Pengiriman</label>
+					<input type="text" name="order_alamat_penerima" id="order_alamat_penerima" class="form-control" autocomplete="off">
+				</div>
+			</div>
+		</ons-list>
+		<br/>
+		<ons-list modifier="inset" id="list-cart">
+			<ons-list-item>
+				<div class="left">
+					Detail Transaksi
+				</div>
+				<div class="center">&nbsp;</div>
+				<div class="right">
+					<button class="btn btn-blue" onclick="myPage.resetToPage('page/order_produk.html', {animation:'fade'});">Tambah Produk</button>
+				</div>
+			</ons-list-item>
+		</ons-list>
+		<br/>
+		<div id="btn-order-byr" class="container">
+			<button id="bayarkeun" class="btn btn-blue btn-full" onclick="">Bayar</button>
+			&nbsp;
+			<button id="batalkeun" class="btn btn-full" onclick="">Batal</button>
+		</div>
+		<br/>
+	</div>
+	<ons-modal direction="up">
+	  <div style="text-align: center">
+	    <p>
+			<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+			<span class="sr-only">Loading...</span>
+	    </p>
+	  </div>
+	</ons-modal>
+</ons-page>
