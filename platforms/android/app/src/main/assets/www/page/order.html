@@ -6,12 +6,15 @@
 		<div class="center text-white">
 			Transaksi
 		</div>
+		<div class="right">
+			<ons-toolbar-button icon="md-file" class="text-white" onclick="myPage.resetToPage('page/order_confirm.html', {animation:'fade'});"></ons-toolbar-button>
+		</div>
 	</ons-toolbar>
 	<div class="background"></div>
 	<div class="content bg-white">
 		<ons-list modifier="inset">
 			<div id="form-trs">
-				<div class="form-group">
+				<!-- <div class="form-group">
 					<label for="order_nama">Nama</label>
 					<input type="text" name="order_nama" id="order_nama" class="form-control" autocomplete="off">
 				</div>
@@ -22,7 +25,7 @@
 				<div class="form-group">
 					<label for="order_alamat">Alamat</label>
 					<input type="text" name="order_alamat" id="order_alamat" class="form-control" autocomplete="off">
-				</div>
+				</div> -->
 
 				<div class="form-group">
 					<label for="order_nama_penerima">Nama Penerima</label>
@@ -46,7 +49,7 @@
 				</div>
 				<div class="center">&nbsp;</div>
 				<div class="right">
-					<button class="btn btn-blue" onclick="myPage.resetToPage('page/order_produk.html', {animation:'fade'});">Tambah Produk</button>
+					<button class="btn btn-blue" onclick="myPage.resetToPage('page/order_produk.html', {animation:'fade'});addLocal_consumer();">Tambah Produk</button>
 				</div>
 			</ons-list-item>
 		</ons-list>

@@ -401,3 +401,18 @@ ons-toast {
 	margin-left: auto;
 	margin-right: auto;	
 }
+.pin{
+    padding: 10px;
+    border: 1px solid #FFFFFF;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    font-size: 30px;
+}
+
+.invisible {
+	visibility: hidden;
+}
+.visible {
+	visibility: visible;
+}

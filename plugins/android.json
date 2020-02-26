@@ -10,10 +10,14 @@
     "com-sarriaroman-photoviewer": {
       "PACKAGE_NAME": "co.id.kadetech.sidia"
     },
-    "cordova-plugin-whitelist": {
+    "cordova-plugin-camera": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
       "PACKAGE_NAME": "co.id.kadetech.sidia"
     },
     "cordova-plugin-in-app-youtube": {
+      "PACKAGE_NAME": "co.id.kadetech.sidia"
+    },
+    "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "co.id.kadetech.sidia"
     }
   },

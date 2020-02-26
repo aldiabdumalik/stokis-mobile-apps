@@ -6,54 +6,86 @@ document.addEventListener("deviceready", function () {
 	document.addEventListener('init', function(event) {
 		const page = event.target;
 		if (page.matches('#page-loading')) {
-			if (localStorage.getItem("id_plm") != undefined || localStorage.getItem("id_plm") != "") {
-				myPage.resetToPage('page/beranda.html', {animation:'fade'});
+			if (localStorage.getItem("id_plm") != undefined && localStorage.getItem("id_plm") != "" && localStorage.getItem("id_plm") != null) {
+				myPage.resetToPage('page/order_confirm.html', {animation:'fade'});
 			}else{
-				myPage.resetToPage('page/login.html', {animation:'fade'});
+				if (localStorage.getItem("id_sementara") != undefined && localStorage.getItem("id_sementara") != "" && localStorage.getItem("id_sementara") != null) {
+					myPage.resetToPage('page/beranda.html', {animation:'fade'});
+				}else{
+					myPage.resetToPage('page/login.html', {animation:'fade'});
+				}
 			}
 		};
+		if (page.matches('#page-pin')) {
+			document.getElementById('pin-1').focus();
+			moveOnMax = function (field, nextFieldID) {
+				if ($(field).val().length == 1) {
+					document.getElementById(nextFieldID).focus();
+				}
+			}
+			moveOnDelete();
+			cek_pin();
+		}
 		if (page.matches('#page-login')) {
+			console.log('Login '+localStorage.getItem("id_plm"));
 			masuk();
 		};
 		if (page.matches('#page-register')) {
 			pendaftaran();
+			back_button('login.html');
 		};
 		if (page.matches('#page-beranda')) {
 			beranda();
 		};
 		if (page.matches('#page-produk')) {
 			produk_all();
+			back_button('beranda.html');
 		};
 		if (page.matches('#page-pertemuan')) {
 			pertemuan();
+			back_button('beranda.html');
 		};
 		if (page.matches('#page-profile')) {
 			profile_update();
+			back_button('pengaturan.html');
 		};
 		if (page.matches('#page-bank')) {
 			bank_update();
+			back_button('pengaturan.html');
 		};
 		if (page.matches('#page-flip')) {
 			flip();
+			back_button('beranda.html');
 		};
 		if (page.matches('#page-persentasi')) {
 			persentasi();
+			back_button('beranda.html');
 		};
 		if (page.matches('#page-plan')) {
 			plan();
+			back_button('beranda.html');
 		};
 		if (page.matches('#page-basic')) {
 			basic();
+			back_button('beranda.html');
 		};
 		if (page.matches('#page-testimoni')) {
 			testimoni();
+			back_button('beranda.html');
 		};
 		if (page.matches('#page-order')) {
 			order_cart();
+			getLocal_consumer();
+			back_button('beranda.html');
 		};
 		if (page.matches('#page-order-produk')) {
 			order_produk();
 			order_produk_onchange();
+			back_button('order.html');
+		}
+		if (page.matches('#page-order-confirm')) {
+			order_confirm();
+			back_button('order.html');
 		}
 	});
 }, false);
@@ -75,7 +107,8 @@ function pendaftaran() {
 				$('#modal-register').hide();
 				ons.notification.alert(result['message'], {title:'Pemberitahuan'}).then(function () {
 					if (result['status']==true) {
-						myPage.resetToPage('page/login.html', {animation:'fade'});
+						localStorage.setItem('id_sementara', $('#register-id').val());
+						myPage.resetToPage('page/pin.html', {animation:'fade'});
 					}
 				});
 			};
@@ -104,6 +137,33 @@ function masuk() {
 			});
 		};
 		xhr.send($("#form-login").serialize());
+		return false;
+	});
+}
+
+function cek_pin() {
+	$('#pin-6').keyup(function () {
+		const idSales = (localStorage.getItem("id_plm") ? localStorage.getItem("id_plm") : localStorage.getItem("id_sementara"));
+		const sales = 
+			'idSales='+idSales+
+			'&pin='+$('#pin-1').val()+$('#pin-2').val()+$('#pin-3').val()+$('#pin-4').val()+$('#pin-5').val()+$('#pin-6').val();
+		console.log(sales);
+		const xhr = new XMLHttpRequest();
+		xhr.onloadstart = function () {
+        }
+		xhr.open("POST", url_api + 'cek_pin.json', true);
+		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		xhr.onload = function () {
+			const result = JSON.parse(this.responseText);
+			console.log(result);
+			if (result['status']==true) {
+				localStorage.setItem("id_plm", result['data']['id_plm']);
+				myPage.resetToPage('page/beranda.html', {animation:'fade'});
+			}else{
+				ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' });
+			}
+		};
+		xhr.send(sales);
 		return false;
 	});
 }
@@ -279,7 +339,7 @@ function pertemuan() {
 	xhr.onloadstart = function () {
         $('ons-modal').show();
     }
-	xhr.open("GET", url_api + 'pertemuan.json?idSales='+localStorage.getItem("id_plm"), true);
+	xhr.open("GET", url_api + 'pertemuan.json', true);
 	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	xhr.onload = function () {
 		const result = JSON.parse(this.responseText);
@@ -290,11 +350,13 @@ function pertemuan() {
 				$('#list-info-pertemuan').append(
 					'<ons-list-item modifier="longdivider" tappable expandable>'+
 						'<div class="left"><i class="fa fa-calendar-o fa-3x fa-blue"></i></div>'+
-						'<div class="center"><span class="list-item__title">'+data['tempatPertemuan']+'</span><span class="list-item__subtitle">'+moment(data['tanggalPertemuan'], "YYYY-MM-DD HH:mm:ss").format('DD-MM-YYYY HH:mm')+' WIB</span></div>'+
+						'<div class="center"><span class="list-item__title">'+data['namaPertemuan']+'</span><span class="list-item__subtitle">'+moment(data['tanggalPertemuan'], "YYYY-MM-DD HH:mm:ss").format('DD-MM-YYYY HH:mm')+' WIB</span></div>'+
 						'<div class="expandable-content">'+
 						'<table>'+
-							'<tr><td>House Couple</td><td>:</td><td>'+data['houseCouple']+'</td><tr>'+
-							'<tr><td>No WA</td><td>:</td><td>'+data['noWa']+'</td><tr>'+
+							'<tr><td>House Couple</td><td>:</td><td>'+data['houseCouple']+'</td></tr>'+
+							'<tr><td>Guest Speaker</td><td>:</td><td>'+data['guestSpeaker']+'</td></tr>'+
+							'<tr><td>Tempat</td><td>:</td><td>'+data['tempatPertemuan']+'</td></tr>'+
+							'<tr><td>No WA</td><td>:</td><td>'+data['noWa']+'</td></tr>'+
 						'</div>'+
 					'</ons-list-item>'
 				);
@@ -527,13 +589,6 @@ function order_cart() {
 							'<tr>'+
 								'<td>&nbsp;</td>'+
 							'</tr>'+
-							'<tr>'+
-								'<table width="100%">'+
-									'<tr>'+
-										'<td><button type="button" class="btn btn-red btn-full btn-test" data-id="'+data['idProduk']+'" onclick="delete_produk('+"'"+data['idProduk']+"'"+''+','+"'"+localStorage.getItem('id_plm')+"'"+')">Hapus Produk</button></td>'+
-									'</tr>'+
-								'</table>'+
-							'</tr>'+
 						'</table>'+
 					'</ons-list-item>'
 				);
@@ -553,9 +608,6 @@ function order_cart() {
 			$('#bayarkeun').click(function () {
 				const consumer = 
 					'id_plm='+localStorage.getItem("id_plm")+
-					'&order_nama='+$('#order_nama').val()+
-					'&order_alamat='+$('#order_alamat').val()+
-					'&order_nowa='+$('#order_nowa').val()+
 					'&order_nama_penerima='+$('#order_nama_penerima').val()+
 					'&order_alamat_penerima='+$('#order_alamat_penerima').val()+
 					'&order_nowa_penerima='+$('#order_nowa_penerima').val();
@@ -731,20 +783,170 @@ function order_produk_onchange(){
 	});
 }
 
+function addLocal_consumer() {
+	localStorage.setItem('order_nama_penerima' ,$('#order_nama_penerima').val());
+	localStorage.setItem('order_alamat_penerima' ,$('#order_alamat_penerima').val());
+	localStorage.setItem('order_nowa_penerima' ,$('#order_nowa_penerima').val());
+}
+
+function getLocal_consumer(argument) {
+	$('#order_nama_penerima').val(localStorage.getItem('order_nama_penerima'));
+	$('#order_alamat_penerima').val(localStorage.getItem('order_alamat_penerima'));
+	$('#order_nowa_penerima').val(localStorage.getItem('order_nowa_penerima'));
+}
+
+function order_confirm() {
+	const xhr = new XMLHttpRequest();
+	xhr.onloadstart = function () {
+        $('ons-modal').show();
+    }
+	xhr.open("GET", url_api + 'list_order_status.json?idSales='+localStorage.getItem('id_plm'), true);
+	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	xhr.onload = function () {
+		const result = JSON.parse(this.responseText);
+		$('ons-modal').hide();
+		if (result['status']) {
+			$.each(result['data']['status_0'], function (d, data) {
+				$('#list-orederan-saya-0').append(
+					'<ons-list-item modifier="longdivider">'+
+						'<div class="center">'+
+							'<table>'+
+								'<tr>'+
+									'<td>Code</td>'+
+									'<td>:</td>'+
+									'<td>'+data['id_order']+'</td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>Nama</td>'+
+									'<td>:</td>'+
+									'<td>'+data['nama_penerima']+'</td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>Total</td>'+
+									'<td>:</td>'+
+									'<td>'+data['total_order']+'</td>'+
+								'</tr>'+
+							'</table>'+
+						'</div>'+
+						'<div class="right">'+
+							'<button class="btn" onclick="kirim_bukti('+"'"+data['id_order']+"'"+')"><i class="fa fa-camera"></i></button>'+
+						'</div>'+
+					'</ons-list-item>'
+				);
+			});
+			$.each(result['data']['status_1'], function (d, data) {
+				$('#list-orederan-saya-1').append(
+					'<ons-list-item modifier="longdivider" expandable>'+
+						'<p>'+data['id_order']+'</p>'+
+						'<div class="expandable-content">'+
+							'<table>'+
+								'<tr>'+
+									'<td>Nama</td>'+
+									'<td>:</td>'+
+									'<td>'+data['nama_penerima']+'</td>'+
+								'</tr>'+
+								'<tr>'+
+									'<td>Total</td>'+
+									'<td>:</td>'+
+									'<td>'+data['total_order']+'</td>'+
+								'</tr>'+
+							'</table>'+
+						'</div>'+
+					'</ons-list-item>'
+				);
+			});
+		}
+	};
+	xhr.send();
+	return false;
+}
+
+function kirim_bukti(id_order) {
+	console.log(id_order);
+	navigator.camera.getPicture(onSuccess, onFail, { quality: 25,
+        destinationType: Camera.DestinationType.DATA_URL
+    });
+    function onSuccess(imageData) {
+    	const data = "orderID="+ id_order +'&fotoBukti='+"data:image/jpeg;base64," + imageData;
+    	const xhr = new XMLHttpRequest();
+    	xhr.onloadstart = function () {
+            $('ons-modal').show();
+        }
+		xhr.open("POST", url_api + 'upload_bukti.json', true);
+		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		xhr.onload = function () {
+			const result = JSON.parse(this.responseText);
+			console.log(result);
+			$('ons-modal').hide();
+			ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' }).then(function () {
+				if (result['status']==true) {
+
+				}
+			});
+		};
+		xhr.send(data);
+		return false;
+    }
+
+    function onFail(message) {
+        alert('Failed because: ' + message);
+    }
+}
+
 function keluar() {
 	ons.notification.confirm('Apakah Anda yakin akan keluar?', {buttonLabels:["Ya", "Tidak"]}).then(function (index) {
-		// console.log(index);
+		if (index==0) {
+			window.localStorage.clear();
+			myPage.resetToPage('page/login.html', {animation:'fade'});
+		}
+	});
+}
+function info_pin() {
+	ons.notification.confirm('Minta PIN ke Admin?', {buttonLabels:["Ya", "Tidak"]}).then(function (index) {
 		if (index==0) {
 			myPage.resetToPage('page/login.html', {animation:'fade'});
 		}
 	});
 }
 
+function back_button(page) {
+	ons.setDefaultDeviceBackButtonListener(function() {
+		myPage.resetToPage('page/'+page, {animation:'slide'});
+	});
+}
 
-
-
-
-/* Fungsi formatRupiah */
+function moveOnDelete() {
+	$('#pin-2').keyup(function (ev) {
+		const keycode = (ev.keyCode ? ev.keyCode : ev.which);
+		if (keycode == 8 || keycode == 46) {
+			document.getElementById('pin-1').focus();
+		}
+	});
+	$('#pin-3').keyup(function (ev) {
+		const keycode = (ev.keyCode ? ev.keyCode : ev.which);
+		if (keycode == 8 || keycode == 46) {
+			document.getElementById('pin-2').focus();
+		}
+	});
+	$('#pin-4').keyup(function (ev) {
+		const keycode = (ev.keyCode ? ev.keyCode : ev.which);
+		if (keycode == 8 || keycode == 46) {
+			document.getElementById('pin-3').focus();
+		}
+	});
+	$('#pin-5').keyup(function (ev) {
+		const keycode = (ev.keyCode ? ev.keyCode : ev.which);
+		if (keycode == 8 || keycode == 46) {
+			document.getElementById('pin-4').focus();
+		}
+	});
+	$('#pin-6').keyup(function (ev) {
+		const keycode = (ev.keyCode ? ev.keyCode : ev.which);
+		if (keycode == 8 || keycode == 46) {
+			document.getElementById('pin-5').focus();
+		}
+	});
+}
 function formatRupiah(angka, prefix){
 	if (angka != null) {
 		var number_string = angka.replace(/[^,\d]/g, '').toString(),

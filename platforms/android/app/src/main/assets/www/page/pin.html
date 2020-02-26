@@ -1,0 +1,21 @@
+<ons-page id="page-pin">
+	<ons-toolbar class="bg-utama">
+		<div class="center text-white">
+			Masukan PIN Anda
+		</div>
+		<div class="right">
+			<ons-toolbar-button icon="fa-info-circle" class="text-white" onclick="info_pin()"></ons-toolbar-button>
+		</div>
+	</ons-toolbar>
+	<div class="background bg-white"></div>
+	<div class="content">
+		<div class="center-div">
+			<input type="password" class="pin" maxlength=1 id="pin-1" placeholder="_" onkeyup="moveOnMax(this,'pin-2')" />
+			<input type="password" class="pin" maxlength=1 id="pin-2" placeholder="_" onkeyup="moveOnMax(this,'pin-3');" />
+			<input type="password" class="pin" maxlength=1 id="pin-3" placeholder="_" onkeyup="moveOnMax(this,'pin-4')" />
+			<input type="password" class="pin" maxlength=1 id="pin-4" placeholder="_" onkeyup="moveOnMax(this,'pin-5')" />
+			<input type="password" class="pin" maxlength=1 id="pin-5" placeholder="_" onkeyup="moveOnMax(this,'pin-6')" />
+			<input type="password" class="pin" maxlength=1 id="pin-6" placeholder="_" />
+		</div>
+	</div>
+</ons-page>
