@@ -1,0 +1,54 @@
+<ons-page id="page-order-confirm-upload">
+	<ons-toolbar class="bg-utama">
+		<div class="left">
+			<ons-toolbar-button icon="fa-arrow-left" class="text-white" onclick="myPage.resetToPage('page/order_confirm.html', {animation:'fade'});"></ons-toolbar-button>
+		</div>
+		<div class="center text-white">
+			Upload Bukti
+		</div>
+	</ons-toolbar>
+	<div class="background"></div>
+	<div class="content bg-white">
+		<div class="container">
+			<form id="form-upload">
+				<div class="form-group">
+					<label for="upload-id-order">ID Order</label>
+					<input type="text" name="upload-id-order" id="upload-id-order" class="form-control" readonly>
+				</div>
+				<div class="form-group">
+					<label for="upload-id-bank">Kirim Ke</label>
+					<select name="upload-id-bank" id="upload-id-bank" class="form-control bg-white">
+						<option value="">Pilih Akun Bank</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="upload-norek-order">Nomor Rekening</label>
+					<input type="text" name="upload-norek-order" id="upload-norek-order" class="form-control" readonly>
+				</div>
+				<div class="form-group">
+					<label for="upload-an-order">Atas Nama</label>
+					<input type="text" name="upload-an-order" id="upload-an-order" class="form-control" readonly>
+				</div>
+				<div class="form-group">
+					<label for="upload-foto-order">Upload Bukti</label>
+					<ons-row>
+						<ons-col>
+							<button type="button" id="upByGalery" class="btn btn-full">Pilih dari Galery</button>
+						</ons-col>
+						<ons-col>
+							<button type="button" id="upByCamera" class="btn btn-full btn-blue">Foto dari Kamera</button>
+						</ons-col>
+					</ons-row>
+				</div>
+			</form>
+		</div>
+	</div>
+	<ons-modal direction="up">
+	  <div style="text-align: center">
+	    <p>
+			<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+			<span class="sr-only">Loading...</span>
+	    </p>
+	  </div>
+	</ons-modal>
+</ons-page>

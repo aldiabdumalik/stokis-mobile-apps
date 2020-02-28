@@ -1,0 +1,14 @@
+cordova build --release
+D:\kadetech.co.id\SiDIA\platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk
+
+cd C:\Program Files\Java\jdk1.8.0_231\bin
+# membuat keystore
+keytool.exe -genkey -v -keystore D:\Android\projectbab6\project6key.keystore -alias pb6 -keyalg RSA -keysize 2048 -validity 10000
+# 
+
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore D:\kadetech.co.id\SiDIA\sidia.keystore D:\kadetech.co.id\SiDIA\platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk pb6
+
+jarsigner -verify -verbose -certs D:\kadetech.co.id\SiDIA\platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk
+
+cd C:\Users\aldia\AppData\Local\Android\Sdk\build-tools\29.0.2
+zipalign -v 4 D:\kadetech.co.id\SiDIA\platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk D:\kadetech.co.id\SiDIA\platforms\android\app\build\outputs\apk\android-release.apk

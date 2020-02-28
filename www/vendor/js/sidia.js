@@ -7,10 +7,10 @@ document.addEventListener("deviceready", function () {
 		const page = event.target;
 		if (page.matches('#page-loading')) {
 			if (localStorage.getItem("id_plm") != undefined && localStorage.getItem("id_plm") != "" && localStorage.getItem("id_plm") != null) {
-				myPage.resetToPage('page/order_confirm.html', {animation:'fade'});
+				myPage.resetToPage('page/pin.html', {animation:'fade'});
 			}else{
 				if (localStorage.getItem("id_sementara") != undefined && localStorage.getItem("id_sementara") != "" && localStorage.getItem("id_sementara") != null) {
-					myPage.resetToPage('page/beranda.html', {animation:'fade'});
+					myPage.resetToPage('page/pin.html', {animation:'fade'});
 				}else{
 					myPage.resetToPage('page/login.html', {animation:'fade'});
 				}
@@ -86,6 +86,10 @@ document.addEventListener("deviceready", function () {
 		if (page.matches('#page-order-confirm')) {
 			order_confirm();
 			back_button('order.html');
+		}
+		if (page.matches('#page-order-confirm-upload')) {
+			order_confirm_upload();
+			back_button('order_confirm.html');
 		}
 	});
 }, false);
@@ -546,6 +550,8 @@ function testimoni_detail(idVideo) {
 }
 
 function order_cart() {
+	consumer_keyup();
+
 	const xhr = new XMLHttpRequest();
 	xhr.onloadstart = function () {
         $('ons-modal').show();
@@ -599,7 +605,14 @@ function order_cart() {
 						'<tr>'+
 							'<td>Total Bayar</td>'+
 							'<td>:</td>'+
-							'<td>'+formatRupiah(result['total']['total_bayar'], 'Rp. ')+'</td>'+
+							'<td>'+
+								'<table>'+
+									'<tr>'+
+										'<td><input type="number" name="total_bayar" id="total_bayar" class="form-control" readonly value="'+result['total']['total_bayar']+'"></td>'+
+										'<td><button class="btn" onclick="ubah_total()">Ubah</button></td>'+
+									'</tr>'+
+								'</table>'+
+							'</td>'+
 						'</tr>'+
 					'</table></b>'+
 				'</ons-list-item>'
@@ -610,24 +623,32 @@ function order_cart() {
 					'id_plm='+localStorage.getItem("id_plm")+
 					'&order_nama_penerima='+$('#order_nama_penerima').val()+
 					'&order_alamat_penerima='+$('#order_alamat_penerima').val()+
-					'&order_nowa_penerima='+$('#order_nowa_penerima').val();
-				xhr.onloadstart = function () {
-			        $('ons-modal').show();
-			    }
-				xhr.open("POST", url_api + 'order.json', true);
-				xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-				xhr.onload = function () {
-					const result = JSON.parse(this.responseText);
-					console.log(result);
-					$('ons-modal').hide();
-					ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' }).then(function () {
-						if (result['status']==true) {
-							myPage.resetToPage('page/beranda.html', {animation:'fade'});
-						}
-					});
-				};
-				xhr.send(consumer);
-				return false;
+					'&order_nowa_penerima='+$('#order_nowa_penerima').val()+
+					'&total_bayar='+$('#total_bayar').val();
+				if ($('#order_nama_penerima').val() != "" && $('#order_alamat_penerima').val() != "" && $('#order_nowa_penerima').val() != "") {
+					xhr.onloadstart = function () {
+				        $('ons-modal').show();
+				    }
+					xhr.open("POST", url_api + 'order.json', true);
+					xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+					xhr.onload = function () {
+						const result = JSON.parse(this.responseText);
+						console.log(result);
+						$('ons-modal').hide();
+						ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' }).then(function () {
+							if (result['status']==true) {
+								localStorage.setItem('order_nama_penerima' , "");
+								localStorage.setItem('order_alamat_penerima' , "");
+								localStorage.setItem('order_nowa_penerima' , "");
+								myPage.resetToPage('page/order_confirm.html', {animation:'fade'});
+							}
+						});
+					};
+					xhr.send(consumer);
+					return false;
+				}else{
+					ons.notification.toast('Masukan data penerima terlebih dahulu', { timeout: 2000, animation: 'ascend' });
+				}
 			});
 
 			$('#batalkeun').click(function () {
@@ -655,6 +676,22 @@ function order_cart() {
 	};
 	xhr.send();
 	return false;
+}
+
+function ubah_total() {
+	$('#total_bayar').attr("readonly", false);
+}
+
+function consumer_keyup() {
+	$('#order_nama_penerima').keyup(function () {
+		localStorage.setItem('order_nama_penerima' ,$('#order_nama_penerima').val());
+	});
+	$('#order_nowa_penerima').keyup(function () {
+		localStorage.setItem('order_nowa_penerima' ,$('#order_nowa_penerima').val());
+	});
+	$('#order_alamat_penerima').keyup(function () {
+		localStorage.setItem('order_alamat_penerima' ,$('#order_alamat_penerima').val());
+	});
 }
 
 function delete_produk(idProduk, id_plm) {
@@ -695,10 +732,10 @@ function order_produk() {
 		}else{
 			$.each(result['data'], function (d, data) {
 				$('#select-order').append(
-					$('<option></option>').attr({'data-img-src':base_url+'assets/img/produk/'+data['fotoProduk'],"value":data['idProduk']}).text(data['namaProduk'])
+					$('<option></option>').attr({"value":data['idProduk']}).text(data['namaProduk'])
 				);
 			});
-			$("#select-order").imagepicker();
+			// $("#select-order").imagepicker();
 		}
 	};
 	xhr.send();
@@ -760,6 +797,7 @@ function order_produk_onchange(){
 		const data = "id_plm="+localStorage.getItem('id_plm')+"&idProduk="+$('#select-order').val()+"&qty_cart="+$('#produk-qty').val()+"&total_cart="+$('#produk-total').val();
 		xhr.onloadstart = function () {
             $('ons-modal').show();
+            $('#page-order-produk-hide').addClass('invisible');
         }
 		xhr.open("POST", url_api + 'cart.json', true);
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -789,7 +827,7 @@ function addLocal_consumer() {
 	localStorage.setItem('order_nowa_penerima' ,$('#order_nowa_penerima').val());
 }
 
-function getLocal_consumer(argument) {
+function getLocal_consumer() {
 	$('#order_nama_penerima').val(localStorage.getItem('order_nama_penerima'));
 	$('#order_alamat_penerima').val(localStorage.getItem('order_alamat_penerima'));
 	$('#order_nowa_penerima').val(localStorage.getItem('order_nowa_penerima'));
@@ -829,7 +867,7 @@ function order_confirm() {
 							'</table>'+
 						'</div>'+
 						'<div class="right">'+
-							'<button class="btn" onclick="kirim_bukti('+"'"+data['id_order']+"'"+')"><i class="fa fa-camera"></i></button>'+
+							'<button class="btn" onclick="moveToOrderUpload('+"'"+data['id_order']+"'"+')"><i class="fa fa-camera"></i></button>'+
 						'</div>'+
 					'</ons-list-item>'
 				);
@@ -861,13 +899,75 @@ function order_confirm() {
 	return false;
 }
 
-function kirim_bukti(id_order) {
-	console.log(id_order);
-	navigator.camera.getPicture(onSuccess, onFail, { quality: 25,
-        destinationType: Camera.DestinationType.DATA_URL
-    });
-    function onSuccess(imageData) {
-    	const data = "orderID="+ id_order +'&fotoBukti='+"data:image/jpeg;base64," + imageData;
+function moveToOrderUpload(idOrder) {
+	localStorage.setItem('idOrderUP', idOrder);
+	myPage.resetToPage('page/order_confirm_upload.html', {animation:'slide'});
+}
+
+function order_confirm_upload() {
+	$('#upload-id-order').val(localStorage.getItem('idOrderUP'));
+	const xhr = new XMLHttpRequest();
+	xhr.onloadstart = function () {
+        $('ons-modal').show();
+    }
+	xhr.open("GET", url_api + 'bank_admin.json', true);
+	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	xhr.onload = function () {
+		const result = JSON.parse(this.responseText);
+		$('ons-modal').hide();
+		if (result['status']==true) {
+			$.each(result['data'], function (d, data) {
+				$('#upload-id-bank').append(
+					$('<option></option>').attr({"value":data['id_bank']}).text(data['nama_bank'])
+				);
+			});
+			$('#upload-id-bank').change(function () {
+				xhr.onloadstart = function () {
+			        $('ons-modal').show();
+			    }
+				xhr.open("GET", url_api + 'bank_admin.json?idBank='+$('#upload-id-bank').val(), true);
+				xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+				xhr.onload = function () {
+					const result = JSON.parse(this.responseText);
+					$('ons-modal').hide();
+					$('#upload-norek-order').val(result['data']['norek_bank']);
+					$('#upload-an-order').val(result['data']['an_bank']);
+				}
+				xhr.send();
+				return false;
+			});
+		}
+	}
+	xhr.send();
+
+	$('#upByCamera').click(function () {
+		console.log('test ');
+		if ($('#upload-id-bank').val() !== "") {
+			navigator.camera.getPicture(onSuccess, onFail, { quality: 25,
+		        destinationType: Camera.DestinationType.DATA_URL
+		    });
+		}else{
+			ons.notification.toast('Silahkan pilih akun bank terlebih dahulu', { timeout: 2000, animation: 'ascend' });
+		}
+	});
+	$('#upByGalery').click(function () {
+		console.log('test ');
+		if ($('#upload-id-bank').val() !== "") {
+			navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+                sourceType: Camera.PictureSourceType.PHOTOLIBRARY, 
+                allowEdit: false,
+                destinationType: Camera.DestinationType.DATA_URL
+            });
+		}else{
+			ons.notification.toast('Silahkan pilih akun bank terlebih dahulu', { timeout: 2000, animation: 'ascend' });
+		}
+	});
+
+	function onSuccess(imageData) {
+    	const data = 
+    		"orderID="+ localStorage.getItem('idOrderUP') +
+    		"&idBank="+ $('#upload-id-bank').val() +
+    		"&fotoBukti="+ imageData;
     	const xhr = new XMLHttpRequest();
     	xhr.onloadstart = function () {
             $('ons-modal').show();
@@ -876,7 +976,38 @@ function kirim_bukti(id_order) {
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		xhr.onload = function () {
 			const result = JSON.parse(this.responseText);
-			console.log(result);
+			$('ons-modal').hide();
+			ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' }).then(function () {
+				if (result['status']==true) {
+
+				}
+			});
+		};
+		xhr.send(data);
+		return false;
+    }
+
+    function onFail(message) {
+        ons.notification.toast('Gagal karena '+message, { timeout: 2000, animation: 'ascend' });
+    }
+	return false;
+}
+
+function kirim_bukti(id_order) {
+	console.log(id_order);
+	navigator.camera.getPicture(onSuccess, onFail, { quality: 25,
+        destinationType: Camera.DestinationType.DATA_URL
+    });
+    function onSuccess(imageData) {
+    	const data = "orderID="+ id_order +'&fotoBukti='+imageData;
+    	const xhr = new XMLHttpRequest();
+    	xhr.onloadstart = function () {
+            $('ons-modal').show();
+        }
+		xhr.open("POST", url_api + 'upload_bukti.json', true);
+		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		xhr.onload = function () {
+			const result = JSON.parse(this.responseText);
 			$('ons-modal').hide();
 			ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' }).then(function () {
 				if (result['status']==true) {
