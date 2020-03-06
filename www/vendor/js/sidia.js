@@ -7,7 +7,7 @@ document.addEventListener("deviceready", function () {
 		const page = event.target;
 		if (page.matches('#page-loading')) {
 			if (localStorage.getItem("id_plm") != undefined && localStorage.getItem("id_plm") != "" && localStorage.getItem("id_plm") != null) {
-				myPage.resetToPage('page/order_confirm_bukti.html', {animation:'fade'});
+				myPage.resetToPage('page/pin.html', {animation:'fade'});
 			}else{
 				if (localStorage.getItem("id_sementara") != undefined && localStorage.getItem("id_sementara") != "" && localStorage.getItem("id_sementara") != null) {
 					myPage.resetToPage('page/pin.html', {animation:'fade'});
@@ -27,8 +27,8 @@ document.addEventListener("deviceready", function () {
 			cek_pin();
 		}
 		if (page.matches('#page-login')) {
-			console.log('Login '+localStorage.getItem("id_plm"));
 			masuk();
+			exit_app();
 		};
 		if (page.matches('#page-register')) {
 			pendaftaran();
@@ -36,6 +36,7 @@ document.addEventListener("deviceready", function () {
 		};
 		if (page.matches('#page-beranda')) {
 			beranda();
+			exit_app();
 		};
 		if (page.matches('#page-produk')) {
 			produk_all();
@@ -1214,6 +1215,20 @@ function page_bukti(idBank, idOrder) {
 		}else{
 			$('#img-bukti-transfer').attr('src', base_url+'assets/img/bukti/'+ idOrder.replace("/", "_")+'.jpg');
 		}
+		$('#screenshoot-bukti').click(function () {
+			navigator.screenshot.save(function(error,res){
+				if(error){
+					console.log(error);
+					myPage.resetToPage('page/order_confirm.html', {animation:'fade'}).then(function () {
+						ons.notification.toast('Screenshot error perangkat anda tidak mendukung ', { timeout: 2000, animation: 'ascend' });
+					});
+				}else{
+					myPage.resetToPage('page/order_confirm.html', {animation:'fade'}).then(function () {
+						ons.notification.toast('Screenshot berhasil disimpan di Galeri', { timeout: 2000, animation: 'ascend' });
+					});
+				}
+			});
+		});
 	});
 }
 
@@ -1236,6 +1251,12 @@ function info_pin() {
 function back_button(page) {
 	ons.setDefaultDeviceBackButtonListener(function() {
 		myPage.resetToPage('page/'+page, {animation:'slide'});
+	});
+}
+
+function exit_app() {
+	ons.setDefaultDeviceBackButtonListener(function() {
+		navigator.app.exitApp();
 	});
 }
 

@@ -19,6 +19,9 @@
     },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "co.id.kadetech.sidia"
+    },
+    "com.darktalker.cordova.screenshot": {
+      "PACKAGE_NAME": "co.id.kadetech.sidia"
     }
   },
   "dependent_plugins": {}

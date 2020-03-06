@@ -13,6 +13,7 @@
     <preference name="AllowInlineMediaPlayback" value="true" />
     <preference name="MediaPlaybackRequiresUserAction" value="false" />
     <access origin='*' allows-arbitrary-loads-for-media='true' allows-arbitrary-loads-in-web-content='true' allows-local-networking='true' />
+    <access origin="whatsapp:*" launch-external="yes" />
     <access origin="https://*.youtube-nocookie.com" />
     <access origin="https://*.youtube.com" />
     <access origin="https://*.ytimg.com" />
