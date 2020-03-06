@@ -7,7 +7,7 @@ document.addEventListener("deviceready", function () {
 		const page = event.target;
 		if (page.matches('#page-loading')) {
 			if (localStorage.getItem("id_plm") != undefined && localStorage.getItem("id_plm") != "" && localStorage.getItem("id_plm") != null) {
-				myPage.resetToPage('page/pin.html', {animation:'fade'});
+				myPage.resetToPage('page/order_confirm_bukti.html', {animation:'fade'});
 			}else{
 				if (localStorage.getItem("id_sementara") != undefined && localStorage.getItem("id_sementara") != "" && localStorage.getItem("id_sementara") != null) {
 					myPage.resetToPage('page/pin.html', {animation:'fade'});
@@ -91,6 +91,9 @@ document.addEventListener("deviceready", function () {
 			order_confirm_upload();
 			back_button('order_confirm.html');
 		}
+		if (page.matches('#page-order-confirm-bukti')) {
+			back_button('order_confirm.html');
+		}
 	});
 }, false);
 function pendaftaran() {
@@ -109,12 +112,14 @@ function pendaftaran() {
 			xhr.onload = function () {
 				const result = JSON.parse(this.responseText);
 				$('#modal-register').hide();
-				ons.notification.alert(result['message'], {title:'Pemberitahuan'}).then(function () {
-					if (result['status']==true) {
-						localStorage.setItem('id_sementara', $('#register-id').val());
-						myPage.resetToPage('page/pin.html', {animation:'fade'});
-					}
-				});
+				if (result['status']==true) {
+					localStorage.setItem('id_sementara', $('#register-id').val());
+					myPage.resetToPage('page/pin.html', {animation:'fade'}).then(function () {
+						ons.notification.alert(result['message'], {title:'Pemberitahuan'});
+					});
+				}else{
+					ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' });
+				}
 			};
 			xhr.send($("#form-register").serialize());
 		}
@@ -159,7 +164,6 @@ function cek_pin() {
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		xhr.onload = function () {
 			const result = JSON.parse(this.responseText);
-			console.log(result);
 			if (result['status']==true) {
 				localStorage.setItem("id_plm", result['data']['id_plm']);
 				myPage.resetToPage('page/beranda.html', {animation:'fade'});
@@ -458,9 +462,10 @@ function plan() {
 				$('#deskripsiPlan').append(data['deskripsiMarketing']);
 			});
 			$.each(result['data']['img'], function (d, data) {
-				const html = '<a href="'+base_url2+'assets/img/marketingplan/'+data['foto']+'" class="js-img-viwer" data-caption="'+data['idMarketing']+'" data-id="'+data['idFoto']+'">'+
-							'<img src="'+base_url2+'assets/img/marketingplan/'+data['foto']+'" alt="">'+
-							'</a>';
+				const html = 
+				'<a href="'+base_url2+'assets/img/marketingplan/'+data['foto']+'" class="js-img-viwer" data-caption="'+data['idMarketing']+'" data-id="'+data['idFoto']+'">'+
+					'<img src="'+base_url2+'assets/img/marketingplan/'+data['foto']+'" alt="">'+
+				'</a>';
 				$('#fotoPlan').append(html);
 			});
 			$(".js-img-viwer").SmartPhoto();
@@ -570,7 +575,7 @@ function order_cart() {
 			$('#btn-order-byr').show();
 			$.each(result['data'], function (d, data) {
 				$('#list-cart').append(
-					'<ons-list-item modifier="longdivider">'+
+					'<ons-list-item modifier="longdivider" onclick="ubah_cart('+"'"+data['id_cart']+"'"+')">'+
 						'<table>'+
 							'<tr>'+
 								'<td>Produk</td>'+
@@ -609,7 +614,6 @@ function order_cart() {
 								'<table>'+
 									'<tr>'+
 										'<td><input type="number" name="total_bayar" id="total_bayar" class="form-control" readonly value="'+result['total']['total_bayar']+'"></td>'+
-										'<td><button class="btn" onclick="ubah_total()">Ubah</button></td>'+
 									'</tr>'+
 								'</table>'+
 							'</td>'+
@@ -635,14 +639,16 @@ function order_cart() {
 						const result = JSON.parse(this.responseText);
 						console.log(result);
 						$('ons-modal').hide();
-						ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' }).then(function () {
-							if (result['status']==true) {
-								localStorage.setItem('order_nama_penerima' , "");
-								localStorage.setItem('order_alamat_penerima' , "");
-								localStorage.setItem('order_nowa_penerima' , "");
-								myPage.resetToPage('page/order_confirm.html', {animation:'fade'});
-							}
-						});
+						if (result['status']==true) {
+							localStorage.setItem('order_nama_penerima' , "");
+							localStorage.setItem('order_alamat_penerima' , "");
+							localStorage.setItem('order_nowa_penerima' , "");
+							myPage.resetToPage('page/order_confirm.html', {animation:'fade'}).then(function () {
+								ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' });
+							});
+						}else{
+							ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' });
+						}
 					};
 					xhr.send(consumer);
 					return false;
@@ -663,11 +669,13 @@ function order_cart() {
 					const result = JSON.parse(this.responseText);
 					console.log(result);
 					$('ons-modal').hide();
-					ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' }).then(function () {
-						if (result['status']==true) {
-							myPage.resetToPage('page/beranda.html', {animation:'fade'});
-						}
-					});
+					if (result['status']==true) {
+						myPage.resetToPage('page/beranda.html', {animation:'fade'}).then(function () {
+							ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' });
+						});
+					}else{
+						ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' });
+					}
 				};
 				xhr.send(idSales);
 				return false;
@@ -676,6 +684,191 @@ function order_cart() {
 	};
 	xhr.send();
 	return false;
+}
+
+function ubah_cart(id_cart) {
+	myPage.resetToPage('page/order_produk_edit.html', {animation:'fade'}).then(function () {
+		$('#id-cart-edit').val(id_cart);
+		const xhr = new XMLHttpRequest();
+		xhr.onloadstart = function () {
+			$('ons-modal').show();
+		}
+		xhr.open("GET", url_api + 'cart.json?idCart='+id_cart, true);
+		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		xhr.onload = function () {
+			const result = JSON.parse(this.responseText);
+			$('ons-modal').hide();
+			$('#select-order-edit').val(result['data']['idProduk']);
+			select_order_edit(result['data']['idProduk'], result['data']['qty_cart'], result['data']['total_cart']);
+			order_produk_onchange_edit();
+			$('#btn-produk-hps').click(function () {
+				delete_produk(result['data']['id_cart']);
+			});
+			$('#btn-produk-edit').click(function () {
+				const data = 
+					"idCart="+ result['data']['id_cart'] +
+					"&id_plm="+ localStorage.getItem('id_plm') +
+					"&idProduk="+ $('#select-order-edit').val() +
+					"&qty_cart="+ $('#produk-qty-edit').val() +
+					"&total_cart="+ $('#produk-total-edit').val();
+
+				if ($('#select-order-edit').val() !== "" && $('#produk-qty-edit').val() !== "" && $('#produk-total-edit').val() !== 0) {
+					const xhr = new XMLHttpRequest();
+					xhr.onloadstart = function () {
+			            $('ons-modal').show();
+			            $('#page-order-produk-hide-edit').addClass('invisible');
+			        }
+					xhr.open("POST", url_api + 'cartedit.json', true);
+					xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+					xhr.onload = function () {
+						const result = JSON.parse(this.responseText);
+						console.log(result);
+						$('ons-modal').hide();
+						if (result['status']==true) {
+							myPage.resetToPage('page/order.html', {animation:'fade'}).then(function () {
+								ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' });
+							});
+						}else{
+							ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' });
+						}
+					};
+					xhr.send(data);
+					return false;
+				}else{
+					ons.notification.toast('Lengkapi detail orderan Anda', { timeout: 2000, animation: 'ascend' });
+				}
+			});
+		}
+		xhr.send();
+		return false;
+
+	});
+
+	const xhr = new XMLHttpRequest();
+	xhr.onloadstart = function () {
+        $('ons-modal').show();
+    }
+	xhr.open("GET", url_api + 'produk_all.json', true);
+	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	xhr.onload = function () {
+		const result = JSON.parse(this.responseText);
+		$('ons-modal').hide();
+		if (result['status']==false) {
+			ons.notification.toast(result['message'], { timeout: 1000, animation: 'ascend' });
+		}else{
+			$.each(result['data'], function (d, data) {
+				$('#select-order-edit').append(
+					$('<option></option>').attr({"value":data['idProduk']}).text(data['namaProduk'])
+				);
+			});
+		}
+	};
+	xhr.send();
+	return false;
+}
+
+function select_order_edit(idProduk, qty_awal, total_awal) {
+	const xhr = new XMLHttpRequest();
+	xhr.onloadstart = function () {
+        $('ons-modal').show();
+    }
+	xhr.open("GET", url_api + 'produk_all.json?idProduk='+idProduk, true);
+	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	xhr.onload = function (event) {
+		const result = JSON.parse(this.responseText);
+		$('ons-modal').hide();
+		$('#produk-qty-edit').html('<option value="">Pilih jumlah Qty</option>');
+		$('#produk-total-edit').val(0);
+		event.preventDefault();
+		if (result['status']==false) {
+			ons.notification.toast(result['message'], { timeout: 1000, animation: 'ascend' });
+		}else{
+			$('#tb-produk-detail-edit').html(
+				'<table width="100%">'+
+					'<tr>'+
+						'<td>Nama</td>'+
+						'<td>:</td>'+
+						'<td>'+result['data']['namaProduk']+'</td>'+
+					'<tr>'+
+					'<tr>'+
+						'<td>Harga</td>'+
+						'<td>:</td>'+
+						'<td>'+formatRupiah(result['data']['hargaProduk'], 'Rp. ')+'</td>'+
+					'<tr>'+
+					'<tr>'+
+						'<td>Stok</td>'+
+						'<td>:</td>'+
+						'<td>'+result['data']['stokProduk']+'</td>'+
+					'<tr>'+
+				'</table>'
+			);
+			for (i = 1; i <= result['data']['stokProduk']; i++) {
+				$('#produk-qty-edit').append(
+					$('<option></option>').attr({"value":i}).text(i)
+				);
+			}
+
+			$('#produk-qty-edit').val(qty_awal);
+			$('#produk-total-edit').val(total_awal);
+
+			$('#produk-qty-edit').change(function () {
+				$('#produk-total-edit').val(parseInt($('#produk-qty-edit').val())*parseInt(result['data']['hargaProduk']));
+			});
+		}
+	};
+	xhr.send();
+	return false;
+}
+
+function order_produk_onchange_edit() {
+	$('#select-order-edit').change(function () {
+		const xhr = new XMLHttpRequest();
+		xhr.onloadstart = function () {
+	        $('ons-modal').show();
+	    }
+		xhr.open("GET", url_api + 'produk_all.json?idProduk='+$('#select-order-edit').val(), true);
+		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		xhr.onload = function (event) {
+			const result = JSON.parse(this.responseText);
+			$('ons-modal').hide();
+			$('#produk-qty-edit').html('<option value="">Pilih jumlah Qty</option>');
+			$('#produk-total-edit').val(0);
+			event.preventDefault();
+			if (result['status']==false) {
+				ons.notification.toast(result['message'], { timeout: 1000, animation: 'ascend' });
+			}else{
+				$('#tb-produk-detail-edit').html(
+					'<table width="100%">'+
+						'<tr>'+
+							'<td>Nama</td>'+
+							'<td>:</td>'+
+							'<td>'+result['data']['namaProduk']+'</td>'+
+						'<tr>'+
+						'<tr>'+
+							'<td>Harga</td>'+
+							'<td>:</td>'+
+							'<td>'+formatRupiah(result['data']['hargaProduk'], 'Rp. ')+'</td>'+
+						'<tr>'+
+						'<tr>'+
+							'<td>Stok</td>'+
+							'<td>:</td>'+
+							'<td>'+result['data']['stokProduk']+'</td>'+
+						'<tr>'+
+					'</table>'
+				);
+				for (i = 1; i <= result['data']['stokProduk']; i++) {
+					$('#produk-qty-edit').append(
+						$('<option></option>').attr({"value":i}).text(i)
+					);
+				}
+				$('#produk-qty-edit').change(function () {
+					$('#produk-total-edit').val(parseInt($('#produk-qty-edit').val())*parseInt(result['data']['hargaProduk']));
+				});
+			}
+		};
+		xhr.send();
+		return false;
+	});
 }
 
 function ubah_total() {
@@ -694,9 +887,9 @@ function consumer_keyup() {
 	});
 }
 
-function delete_produk(idProduk, id_plm) {
+function delete_produk(idCart) {
 	const xhr = new XMLHttpRequest();
-	const data = "id_plm="+id_plm+"&idProduk="+idProduk;
+	const data = "idCart="+idCart;
 	xhr.onloadstart = function () {
         $('ons-modal').show();
     }
@@ -705,13 +898,13 @@ function delete_produk(idProduk, id_plm) {
 	xhr.onload = function () {
 		const result = JSON.parse(this.responseText);
 		$('ons-modal').hide();
-		ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' }).then(function () {
-			if (result['status']==true) {
-				myPage.resetToPage('page/beranda.html', {animation:'fade'}).then(function () {
-					myPage.resetToPage('page/order.html', {animation:'fade'});
-				});
-			}
-		});
+		if (result['status']==true) {
+			myPage.resetToPage('page/order.html', {animation:'fade'}).then(function () {
+				ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' });
+			});
+		}else{
+			ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' });
+		}
 	};
 	xhr.send(data);
 	return false;
@@ -793,31 +986,35 @@ function order_produk_onchange(){
 	});
 	$('.btn-produk-bayar').click(function () {
 		const btn = $(this).data('id');
-		const xhr = new XMLHttpRequest();
-		const data = "id_plm="+localStorage.getItem('id_plm')+"&idProduk="+$('#select-order').val()+"&qty_cart="+$('#produk-qty').val()+"&total_cart="+$('#produk-total').val();
-		xhr.onloadstart = function () {
-            $('ons-modal').show();
-            $('#page-order-produk-hide').addClass('invisible');
-        }
-		xhr.open("POST", url_api + 'cart.json', true);
-		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		xhr.onload = function () {
-			const result = JSON.parse(this.responseText);
-			$('ons-modal').hide();
-			ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' }).then(function () {
+		if ($('#select-order').val() !== "" && $('#produk-qty').val() !== "" && $('#produk-total').val() !== 0) {
+			const xhr = new XMLHttpRequest();
+			const data = "id_plm="+localStorage.getItem('id_plm')+"&idProduk="+$('#select-order').val()+"&qty_cart="+$('#produk-qty').val()+"&total_cart="+$('#produk-total').val();
+			xhr.onloadstart = function () {
+	            $('ons-modal').show();
+	            $('#page-order-produk-hide').addClass('invisible');
+	        }
+			xhr.open("POST", url_api + 'cart.json', true);
+			xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+			xhr.onload = function () {
+				const result = JSON.parse(this.responseText);
+				$('ons-modal').hide();
 				if (result['status']==true) {
 					if (btn == 1) {
-						myPage.resetToPage('page/order.html', {animation:'fade'});
+						myPage.resetToPage('page/order.html', {animation:'fade'}).then(function () {
+							ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' });
+						});
 					}else{
 						myPage.resetToPage('page/order.html', {animation:'fade'}).then(function () {
 							myPage.resetToPage('page/order_produk.html', {animation:'fade'});
 						});
 					}
 				}
-			});
-		};
-		xhr.send(data);
-		return false;
+			};
+			xhr.send(data);
+			return false;
+		}else{
+			ons.notification.toast('Lengkapi detail orderan Anda', { timeout: 2000, animation: 'ascend' });
+		}
 	});
 }
 
@@ -846,7 +1043,7 @@ function order_confirm() {
 		if (result['status']) {
 			$.each(result['data']['status_0'], function (d, data) {
 				$('#list-orederan-saya-0').append(
-					'<ons-list-item modifier="longdivider">'+
+					'<ons-list-item modifier="longdivider chevron" onclick="moveToOrderUpload('+"'"+data['id_order']+"'"+')">'+
 						'<div class="center">'+
 							'<table>'+
 								'<tr>'+
@@ -865,9 +1062,6 @@ function order_confirm() {
 									'<td>'+data['total_order']+'</td>'+
 								'</tr>'+
 							'</table>'+
-						'</div>'+
-						'<div class="right">'+
-							'<button class="btn" onclick="moveToOrderUpload('+"'"+data['id_order']+"'"+')"><i class="fa fa-camera"></i></button>'+
 						'</div>'+
 					'</ons-list-item>'
 				);
@@ -932,6 +1126,14 @@ function order_confirm_upload() {
 					$('ons-modal').hide();
 					$('#upload-norek-order').val(result['data']['norek_bank']);
 					$('#upload-an-order').val(result['data']['an_bank']);
+
+					if ($('#upload-id-bank').val() == 4) {
+						$('#if-cod').removeClass('invisible');
+						$('#if-bank').addClass('invisible');
+					}else{
+						$('#if-bank').removeClass('invisible');
+						$('#if-cod').addClass('invisible');
+					}
 				}
 				xhr.send();
 				return false;
@@ -941,7 +1143,6 @@ function order_confirm_upload() {
 	xhr.send();
 
 	$('#upByCamera').click(function () {
-		console.log('test ');
 		if ($('#upload-id-bank').val() !== "") {
 			navigator.camera.getPicture(onSuccess, onFail, { quality: 25,
 		        destinationType: Camera.DestinationType.DATA_URL
@@ -951,7 +1152,6 @@ function order_confirm_upload() {
 		}
 	});
 	$('#upByGalery').click(function () {
-		console.log('test ');
 		if ($('#upload-id-bank').val() !== "") {
 			navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
                 sourceType: Camera.PictureSourceType.PHOTOLIBRARY, 
@@ -960,6 +1160,13 @@ function order_confirm_upload() {
             });
 		}else{
 			ons.notification.toast('Silahkan pilih akun bank terlebih dahulu', { timeout: 2000, animation: 'ascend' });
+		}
+	});
+	$('#upByCOD').click(function () {
+		if ($('#upload-id-bank').val() !== "") {
+			onSuccess('-');
+		}else{
+			ons.notification.toast('Silahkan pilih COD untuk mengonfirmasi', { timeout: 2000, animation: 'ascend' });
 		}
 	});
 
@@ -971,17 +1178,23 @@ function order_confirm_upload() {
     	const xhr = new XMLHttpRequest();
     	xhr.onloadstart = function () {
             $('ons-modal').show();
+			setTimeout(function(){
+				$('ons-modal').hide();
+				ons.notification.toast('Koneksi anda tidak stabil, silahkan ulangi beberapa saat lagi', { timeout: 5000, animation: 'ascend' });
+			}, 180000);
         }
 		xhr.open("POST", url_api + 'upload_bukti.json', true);
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		xhr.onload = function () {
 			const result = JSON.parse(this.responseText);
 			$('ons-modal').hide();
-			ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' }).then(function () {
-				if (result['status']==true) {
-
-				}
-			});
+			if (result['status']==true) {
+				ons.notification.toast(result['message'], { timeout: 3000, animation: 'ascend' }).then(function () {
+					page_bukti($('#upload-id-bank').val(), localStorage.getItem('idOrderUP'));
+				});
+			}else{
+				ons.notification.toast(result['message'], { timeout: 3000, animation: 'ascend' });
+			}
 		};
 		xhr.send(data);
 		return false;
@@ -993,35 +1206,15 @@ function order_confirm_upload() {
 	return false;
 }
 
-function kirim_bukti(id_order) {
-	console.log(id_order);
-	navigator.camera.getPicture(onSuccess, onFail, { quality: 25,
-        destinationType: Camera.DestinationType.DATA_URL
-    });
-    function onSuccess(imageData) {
-    	const data = "orderID="+ id_order +'&fotoBukti='+imageData;
-    	const xhr = new XMLHttpRequest();
-    	xhr.onloadstart = function () {
-            $('ons-modal').show();
-        }
-		xhr.open("POST", url_api + 'upload_bukti.json', true);
-		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		xhr.onload = function () {
-			const result = JSON.parse(this.responseText);
-			$('ons-modal').hide();
-			ons.notification.toast(result['message'], { timeout: 2000, animation: 'ascend' }).then(function () {
-				if (result['status']==true) {
-
-				}
-			});
-		};
-		xhr.send(data);
-		return false;
-    }
-
-    function onFail(message) {
-        alert('Failed because: ' + message);
-    }
+function page_bukti(idBank, idOrder) {
+	console.log(idBank +' '+ idOrder);
+	myPage.resetToPage('page/order_confirm_bukti.html', {animation:'fade'}).then(function () {
+		if (idBank == 4) {
+			$('#img-bukti-transfer').attr('src', base_url+'assets/img/bukti/cod.jpg');
+		}else{
+			$('#img-bukti-transfer').attr('src', base_url+'assets/img/bukti/'+ idOrder.replace("/", "_")+'.jpg');
+		}
+	});
 }
 
 function keluar() {

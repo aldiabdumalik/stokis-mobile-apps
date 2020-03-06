@@ -1,0 +1,55 @@
+<ons-page id="page-order-produk-edit">
+	<ons-toolbar class="bg-utama">
+		<div class="left">
+			<ons-toolbar-button icon="fa-arrow-left" class="text-white" onclick="myPage.resetToPage('page/order.html', {animation:'fade'});"></ons-toolbar-button>
+		</div>
+		<div class="center text-white">
+			Ubah Order
+		</div>
+	</ons-toolbar>
+	<div class="background"></div>
+	<div id="page-order-produk-hide-edit" class="content bg-white">
+		<div class="container">
+			<div class="form-group">
+				<input type="hidden" name="id-cart-edit" id="id-cart-edit" class="form-control" readonly>
+			</div>
+			<h3>Silahkan pilih produk</h3>
+			<div class="form-group">
+				<select id="select-order-edit" class="form-control bg-white">
+					<option value="">Pilih Produk</option>
+				</select>
+			</div>
+			<br/>
+			<br/>
+			<div id="tb-produk-detail-edit"></div>
+		</div>
+		<div class="container" style="margin-top: 20px;">
+			<div class="form-group">
+				<label for="produk-qty-edit">Qty</label>
+				<select name="produk-qty-edit" id="produk-qty-edit" class="form-control bg-white">
+					<option value="">Pilih jumlah Qty</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="produk-total-edit">Total</label>
+				<input type="text" name="produk-total-edit" id="produk-total-edit" class="form-control" value="0" readonly>
+			</div>
+			<div class="form-group">
+				<table width="100%">
+					<tr>
+						<td width="50%"><button type="button" id="btn-produk-hps" data-id="1" class="btn btn-red btn-full">Hapus</button></td>
+						<td width="50%"><button type="button" id="btn-produk-edit" data-id="2" class="btn btn-full">Ubah Order</button></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<ons-modal direction="up">
+	  <div style="text-align: center">
+	    <p>
+			<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+			<span class="sr-only">Loading...</span>
+	    </p>
+	  </div>
+	</ons-modal>
+</ons-page>

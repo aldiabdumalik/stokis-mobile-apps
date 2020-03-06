@@ -24,6 +24,12 @@ body {
 .text-blue {
 	color: #00AEEF;
 }
+.text-center{
+	text-align: center;
+}
+.text-bold {
+	font-weight: bold;
+}
 .abu{
 	color: #AAC2DF;
 }

@@ -30,6 +30,7 @@
     <access origin="https://*.googlevideo.com" />
     <access origin="https://*.google.com" />
     <allow-navigation href="*" />
+    <allow-intent href="whatsapp:*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />

@@ -1,0 +1,29 @@
+<ons-page id="page-order-confirm-bukti">
+	<ons-toolbar class="bg-utama">
+		<div class="left">
+			<ons-toolbar-button icon="fa-arrow-left" class="text-white" onclick="myPage.resetToPage('page/order_confirm.html', {animation:'fade'});"></ons-toolbar-button>
+		</div>
+		<div class="center text-white">
+			Bukti Anda
+		</div>
+	</ons-toolbar>
+	<div class="background"></div>
+	<div class="content bg-white">
+		<div class="container">
+			<h2 class="text-center text-bold">Bukti berhasil dikirim</h2>
+			<img id="img-bukti-transfer" src="vendor/img/logo.jpeg" class="img-responsive img-login" alt="">
+			<p style="margin-top: 20px;">
+				Silahkan screenshoot dan kirim pada Admin (jika perlu)
+			</p>
+			<button type="button" id="screenshoot-bukti" class="btn btn-blue btn-full">Screenshot</button>
+		</div>
+	</div>
+	<ons-modal direction="up">
+	  <div style="text-align: center">
+	    <p>
+			<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+			<span class="sr-only">Loading...</span>
+	    </p>
+	  </div>
+	</ons-modal>
+</ons-page>
