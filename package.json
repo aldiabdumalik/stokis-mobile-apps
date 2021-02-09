@@ -26,7 +26,7 @@
     "grunt-contrib-connect": "^2.1.0",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-exec": "^3.0.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "load-grunt-tasks": "^5.1.0",
     "moment": "^2.24.0",
     "onsenui": "^2.10.10",
